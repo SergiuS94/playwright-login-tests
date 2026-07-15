@@ -12,14 +12,14 @@ test.describe('Login Page - the-internet.herokuapp.com', () => {
     await loginPage.goto();
   });
 
-  test('afiseaza corect elementele paginii de login', async ({ page }) => {
+  test('displays the login page elements correctly', async ({ page }) => {
     await expect(loginPage.usernameInput).toBeVisible();
     await expect(loginPage.passwordInput).toBeVisible();
     await expect(loginPage.loginButton).toBeVisible();
     await expect(page).toHaveURL(/.*\/login/);
   });
 
-  test('login cu credentiale valide duce la /secure si mesaj de succes', async ({ page }) => {
+  test('login with valid credentials redirects to /secure with a success message', async ({ page }) => {
     await loginPage.login(VALID_USERNAME, VALID_PASSWORD);
 
     await expect(page).toHaveURL(/.*\/secure/);
@@ -28,30 +28,30 @@ test.describe('Login Page - the-internet.herokuapp.com', () => {
     await expect(loginPage.secureAreaHeading).toContainText('Secure Area');
   });
 
-  test('login cu username gresit afiseaza mesaj de eroare', async ({ page }) => {
-    await loginPage.login('utilizator_gresit', VALID_PASSWORD);
+  test('login with an invalid username shows an error message', async ({ page }) => {
+    await loginPage.login('invalid_user', VALID_PASSWORD);
 
     await expect(page).toHaveURL(/.*\/login/);
     await expect(loginPage.flashMessage).toBeVisible();
     await expect(loginPage.flashMessage).toContainText('Your username is invalid!');
   });
 
-  test('login cu parola gresita afiseaza mesaj de eroare', async ({ page }) => {
-    await loginPage.login(VALID_USERNAME, 'parola_gresita');
+  test('login with an invalid password shows an error message', async ({ page }) => {
+    await loginPage.login(VALID_USERNAME, 'wrong_password');
 
     await expect(page).toHaveURL(/.*\/login/);
     await expect(loginPage.flashMessage).toBeVisible();
     await expect(loginPage.flashMessage).toContainText('Your password is invalid!');
   });
 
-  test('login cu campuri goale afiseaza eroare pentru username', async ({ page }) => {
+  test('login with empty fields shows an error for the username', async ({ page }) => {
     await loginPage.login('', '');
 
     await expect(loginPage.flashMessage).toBeVisible();
     await expect(loginPage.flashMessage).toContainText('Your username is invalid!');
   });
 
-  test('logout dupa autentificare reusita revine pe pagina de login', async ({ page }) => {
+  test('logout after a successful login returns to the login page', async ({ page }) => {
     await loginPage.login(VALID_USERNAME, VALID_PASSWORD);
     await expect(page).toHaveURL(/.*\/secure/);
 
@@ -61,8 +61,8 @@ test.describe('Login Page - the-internet.herokuapp.com', () => {
     await expect(loginPage.flashMessage).toContainText('You logged out of the secure area!');
   });
 
-  test('mesajul de eroare poate fi inchis (buton close)', async ({ page }) => {
-    await loginPage.login(VALID_USERNAME, 'parola_gresita');
+  test('the error message can be dismissed (close button)', async ({ page }) => {
+    await loginPage.login(VALID_USERNAME, 'wrong_password');
     await expect(loginPage.flashMessage).toBeVisible();
 
     const closeButton = loginPage.flashMessage.locator('.close');

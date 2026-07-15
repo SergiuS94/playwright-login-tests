@@ -6,12 +6,29 @@ export default defineConfig({
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 2 : 0,
   workers: process.env.CI ? 1 : undefined,
-  reporter: 'html',
+  reporter: [
+    ['html'],
+    [
+      'allure-playwright',
+      {
+        resultsDir: 'allure-results',
+        detail: true,
+        suiteTitle: false,
+        environmentInfo: {
+          framework: 'Playwright',
+          language: 'TypeScript',
+        },
+      },
+    ],
+  ],
 
   use: {
     baseURL: 'https://the-internet.herokuapp.com',
-    trace: 'on-first-retry',
+    // 'retain-on-failure' ensures trace and video are kept
+    // on any failure, not just on retry (needed for Allure attachments)
+    trace: 'retain-on-failure',
     screenshot: 'only-on-failure',
+    video: 'retain-on-failure',
   },
 
   projects: [

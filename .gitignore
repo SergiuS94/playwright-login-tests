@@ -3,3 +3,7 @@ test-results/
 playwright-report/
 playwright/.cache/
 .env
+
+# Allure
+allure-results/
+allure-report/

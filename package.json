@@ -1,17 +1,21 @@
 {
   "name": "playwright-login-tests",
   "version": "1.0.0",
-  "description": "Teste Playwright + TypeScript pentru pagina de login de pe the-internet.herokuapp.com",
+  "description": "Playwright + TypeScript tests for the login page at the-internet.herokuapp.com",
   "scripts": {
     "test": "playwright test",
     "test:headed": "playwright test --headed",
     "test:ui": "playwright test --ui",
     "test:debug": "playwright test --debug",
-    "report": "playwright show-report"
+    "report": "playwright show-report",
+    "report:generate": "allure generate allure-results --clean -o allure-report",
+    "report:open": "allure open allure-report"
   },
   "devDependencies": {
     "@playwright/test": "^1.48.0",
     "@types/node": "^20.14.0",
-    "typescript": "^5.5.0"
+    "typescript": "^5.5.0",
+    "allure-playwright": "^3.0.5",
+    "allure-commandline": "^2.32.0"
   }
 }
