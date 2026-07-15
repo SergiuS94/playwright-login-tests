@@ -14,7 +14,8 @@ playwright-login-tests/
 │   ├── login.spec.ts       # testele propriu-zise
 │   └── pages/
 │       └── LoginPage.ts    # Page Object Model
-└── .gitignore
+├── .gitignore
+└── allure-results/          # generat automat la rulare, NU se urca pe git
 ```
 
 ## Instalare (in VS Code, terminal integrat)
@@ -33,11 +34,34 @@ npm run test:ui         # UI mode interactiv (recomandat pentru debugging)
 npm run test:debug      # mod debug pas cu pas
 ```
 
-## Raport rezultate
+## Raport rezultate (HTML nativ Playwright)
 
 ```bash
 npm run report
 ```
+
+## Raport Allure
+
+Proiectul genereaza, in paralel cu raportul HTML nativ, si rezultate compatibile Allure (director `allure-results/`), cu pasi (before/action/after), screenshot/video/trace atasate automat la esec, si metadate (feature, severity).
+
+**Cerinta:** ai nevoie de Java (JRE 8+) instalat pe calculator pentru ca `allure-commandline` sa poata genera raportul HTML.
+
+1. Ruleaza testele (genereaza automat `allure-results/`):
+   ```bash
+   npm test
+   ```
+
+2. Genereaza raportul HTML din rezultate:
+   ```bash
+   npm run report:generate
+   ```
+
+3. Deschide raportul in browser:
+   ```bash
+   npm run report:open
+   ```
+
+Raportul afiseaza pentru fiecare test: pasii (inclusiv `beforeEach`), status, durata, si atasamentele (screenshot/video/trace) pentru testele esuate.
 
 ## Credentiale valide folosite in teste
 
