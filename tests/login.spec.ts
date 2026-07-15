@@ -1,6 +1,4 @@
 import { test, expect } from '@playwright/test';
-import * as allure from 'allure-js-commons';
-import { Severity } from 'allure-js-commons';
 import { LoginPage } from './pages/LoginPage';
 
 const VALID_USERNAME = 'tomsmith';
@@ -10,75 +8,50 @@ test.describe('Login Page - the-internet.herokuapp.com', () => {
   let loginPage: LoginPage;
 
   test.beforeEach(async ({ page }) => {
-    // metadate comune pentru toate testele din acest fisier (grupare pe epic/feature in raport)
-    await allure.epic('Autentificare');
-    await allure.feature('Login Page');
-
     loginPage = new LoginPage(page);
     await loginPage.goto();
   });
 
-  test('afiseaza corect elementele paginii de login', async ({ page }) => {
-    await allure.severity(Severity.MINOR);
-
+  test('displays the login page elements correctly', async ({ page }) => {
     await expect(loginPage.usernameInput).toBeVisible();
     await expect(loginPage.passwordInput).toBeVisible();
     await expect(loginPage.loginButton).toBeVisible();
     await expect(page).toHaveURL(/.*\/login/);
   });
 
-  // test pilot: metadate complete (epic/feature/story/severity) + step-uri explicite
-  test('login cu credentiale valide duce la /secure si mesaj de succes', async ({ page }) => {
-    await allure.story('Login cu credentiale valide');
-    await allure.severity(Severity.BLOCKER);
+  test('login with valid credentials redirects to /secure with a success message', async ({ page }) => {
+    await loginPage.login(VALID_USERNAME, VALID_PASSWORD);
 
-    await allure.step('Completez formularul si trimit login-ul', async () => {
-      await loginPage.login(VALID_USERNAME, VALID_PASSWORD);
-    });
-
-    await allure.step('Verific redirectionarea catre zona securizata', async () => {
-      await expect(page).toHaveURL(/.*\/secure/);
-      await expect(loginPage.secureAreaHeading).toContainText('Secure Area');
-    });
-
-    await allure.step('Verific mesajul de confirmare', async () => {
-      await expect(loginPage.flashMessage).toBeVisible();
-      await expect(loginPage.flashMessage).toContainText('You logged into a secure area!');
-    });
+    await expect(page).toHaveURL(/.*\/secure/);
+    await expect(loginPage.flashMessage).toBeVisible();
+    await expect(loginPage.flashMessage).toContainText('You logged into a secure area!');
+    await expect(loginPage.secureAreaHeading).toContainText('Secure Area');
   });
 
-  test('login cu username gresit afiseaza mesaj de eroare', async ({ page }) => {
-    await allure.severity(Severity.CRITICAL);
-
-    await loginPage.login('utilizator_gresit', VALID_PASSWORD);
+  test('login with an invalid username shows an error message', async ({ page }) => {
+    await loginPage.login('invalid_user', VALID_PASSWORD);
 
     await expect(page).toHaveURL(/.*\/login/);
     await expect(loginPage.flashMessage).toBeVisible();
     await expect(loginPage.flashMessage).toContainText('Your username is invalid!');
   });
 
-  test('login cu parola gresita afiseaza mesaj de eroare', async ({ page }) => {
-    await allure.severity(Severity.CRITICAL);
-
-    await loginPage.login(VALID_USERNAME, 'parola_gresita');
+  test('login with an invalid password shows an error message', async ({ page }) => {
+    await loginPage.login(VALID_USERNAME, 'wrong_password');
 
     await expect(page).toHaveURL(/.*\/login/);
     await expect(loginPage.flashMessage).toBeVisible();
     await expect(loginPage.flashMessage).toContainText('Your password is invalid!');
   });
 
-  test('login cu campuri goale afiseaza eroare pentru username', async ({ page }) => {
-    await allure.severity(Severity.NORMAL);
-
+  test('login with empty fields shows an error for the username', async ({ page }) => {
     await loginPage.login('', '');
 
     await expect(loginPage.flashMessage).toBeVisible();
     await expect(loginPage.flashMessage).toContainText('Your username is invalid!');
   });
 
-  test('logout dupa autentificare reusita revine pe pagina de login', async ({ page }) => {
-    await allure.severity(Severity.CRITICAL);
-
+  test('logout after a successful login returns to the login page', async ({ page }) => {
     await loginPage.login(VALID_USERNAME, VALID_PASSWORD);
     await expect(page).toHaveURL(/.*\/secure/);
 
@@ -88,10 +61,8 @@ test.describe('Login Page - the-internet.herokuapp.com', () => {
     await expect(loginPage.flashMessage).toContainText('You logged out of the secure area!');
   });
 
-  test('mesajul de eroare poate fi inchis (buton close)', async ({ page }) => {
-    await allure.severity(Severity.MINOR);
-
-    await loginPage.login(VALID_USERNAME, 'parola_gresita');
+  test('the error message can be dismissed (close button)', async ({ page }) => {
+    await loginPage.login(VALID_USERNAME, 'wrong_password');
     await expect(loginPage.flashMessage).toBeVisible();
 
     const closeButton = loginPage.flashMessage.locator('.close');

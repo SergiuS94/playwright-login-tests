@@ -24,8 +24,8 @@ export default defineConfig({
 
   use: {
     baseURL: 'https://the-internet.herokuapp.com',
-    // 'retain-on-failure' asigura ca trace-ul si video-ul sunt pastrate
-    // la orice esec, nu doar la retry (necesar pentru atasarea in Allure)
+    // 'retain-on-failure' ensures trace and video are kept
+    // on any failure, not just on retry (needed for Allure attachments)
     trace: 'retain-on-failure',
     screenshot: 'only-on-failure',
     video: 'retain-on-failure',

@@ -1,7 +1,7 @@
 {
   "name": "playwright-login-tests",
   "version": "1.0.0",
-  "description": "Teste Playwright + TypeScript pentru pagina de login de pe the-internet.herokuapp.com",
+  "description": "Playwright + TypeScript tests for the login page at the-internet.herokuapp.com",
   "scripts": {
     "test": "playwright test",
     "test:headed": "playwright test --headed",
@@ -16,7 +16,6 @@
     "@types/node": "^20.14.0",
     "typescript": "^5.5.0",
     "allure-playwright": "^3.0.5",
-    "allure-commandline": "^2.32.0",
-    "allure-js-commons": "^3.0.5"
+    "allure-commandline": "^2.32.0"
   }
 }

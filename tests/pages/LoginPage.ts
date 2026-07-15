@@ -1,7 +1,7 @@
 import { type Page, type Locator } from '@playwright/test';
 
 /**
- * Page Object Model pentru pagina de login de pe the-internet.herokuapp.com
+ * Page Object Model for the login page at the-internet.herokuapp.com
  */
 export class LoginPage {
   readonly page: Page;
@@ -18,7 +18,7 @@ export class LoginPage {
     this.passwordInput = page.locator('#password');
     this.loginButton = page.locator('button[type="submit"]');
     this.flashMessage = page.locator('#flash');
-    this.logoutButton = page.locator('a.button.secondary'); // butonul "Logout"
+    this.logoutButton = page.locator('a.button.secondary'); // the "Logout" button
     this.secureAreaHeading = page.locator('h2');
   }
 
