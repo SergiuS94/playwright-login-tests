@@ -1,8 +1,17 @@
 import { test, expect } from '@playwright/test';
 import { LoginPage } from './pages/LoginPage';
+import dotenv from 'dotenv';
+dotenv.config({ path: '.env' });
 
-const VALID_USERNAME = 'tomsmith';
-const VALID_PASSWORD = 'SuperSecretPassword!';
+const VALID_USERNAME = process.env.VALID_USERNAME;
+const VALID_PASSWORD = process.env.VALID_PASSWORD;
+
+if (!VALID_USERNAME || !VALID_PASSWORD) {
+  throw new Error(
+    'Missing VALID_USERNAME / VALID_PASSWORD environment variables. ' +
+      'Copy .env.example to .env and fill in the values (see README).'
+  );
+}
 
 test.describe('Login Page - the-internet.herokuapp.com', () => {
   let loginPage: LoginPage;
@@ -70,4 +79,5 @@ test.describe('Login Page - the-internet.herokuapp.com', () => {
 
     await expect(loginPage.flashMessage).not.toBeVisible();
   });
+  
 });
