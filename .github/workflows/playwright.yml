@@ -14,7 +14,6 @@ jobs:
     # variables -> Actions), never hardcoded in the workflow file.
     env:
       VALID_PASSWORD: ${{ secrets.VALID_PASSWORD }}
-
     steps:
       - uses: actions/checkout@v4
 
@@ -30,6 +29,11 @@ jobs:
 
       - name: Run tests
         run: npm test
+
+       # === Allure Report ===
+      - name: Generate Allure Report
+        if: always()
+        run: npm run report:generate
 
       - name: Upload Allure Report
         if: always()
