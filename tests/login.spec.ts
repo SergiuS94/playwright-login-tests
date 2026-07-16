@@ -6,7 +6,7 @@ dotenv.config({ path: '.env' });
 const VALID_USERNAME = 'tomsmith';
 const VALID_PASSWORD = process.env.VALID_PASSWORD;
 
-if (!VALID_USERNAME || !VALID_PASSWORD) {
+if (!VALID_PASSWORD) {
   throw new Error(
     'Missing VALID_PASSWORD environment variables. '
   );
