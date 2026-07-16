@@ -12,7 +12,9 @@ jobs:
 
     # Values come from the repository secrets (Settings -> Secrets and
     # variables -> Actions), never hardcoded in the workflow file.
-    
+    env:
+      VALID_PASSWORD: ${{ secrets.VALID_PASSWORD }}
+      
     steps:
       - uses: actions/checkout@v4
 

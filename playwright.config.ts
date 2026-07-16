@@ -1,4 +1,10 @@
 import { defineConfig, devices } from '@playwright/test';
+import dotenv from 'dotenv';
+
+// Loads variables from .env (locally). In CI, GitHub Actions injects
+// them directly as environment variables from the repository secrets,
+// so this call is a no-op there if .env doesn't exist.
+dotenv.config();
 
 export default defineConfig({
   testDir: './tests',
